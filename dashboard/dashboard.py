@@ -79,3 +79,50 @@ for i, v in enumerate(review_score_df.values):
     ax.text(i, v + 5, str(v), ha='center', va='bottom', fontsize=12, color='black')
 
 st.pyplot(fig)
+
+st.subheader("Fitur Interaktif Rating & Review Score")
+
+# Filter by rating using a selectbox
+rating_filter = st.selectbox(
+    'Filter by Rating Score',
+    options=[None] + sorted(df_cust_df.unique().tolist()),
+    index=0
+)
+
+# Filter the dataframe based on the selected rating
+if rating_filter is not None:
+    filtered_df = df_cust_df[df_cust_df == rating_filter]
+else:
+    filtered_df = df_cust_df
+
+# Display the Average and Most Common Review Score based on the filtered data
+col1, col2 = st.columns(2)
+
+with col1:
+    st.markdown(f"Average Review Score: **{filtered_df.mean():.2f}**")
+
+with col2:
+    st.markdown(f"Most Common Review Score: **{filtered_df.value_counts().idxmax()}**")
+
+# Count the occurrences of each rating in the filtered data
+review_score_df_filtered = filtered_df.value_counts().sort_index()
+
+# Create a bar plot for the filtered data
+fig, ax = plt.subplots(figsize=(12, 6))
+colors = sns.color_palette("viridis", len(review_score_df_filtered))
+
+sns.barplot(x=review_score_df_filtered.index,
+            y=review_score_df_filtered.values,
+            order=review_score_df_filtered.index,
+            palette=colors)
+
+plt.title("Customer Review Scores for Service", fontsize=15)
+plt.xlabel("Rating")
+plt.ylabel("Count")
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+
+for i, v in enumerate(review_score_df_filtered.values):
+    ax.text(i, v + 5, str(v), ha='center', va='bottom', fontsize=12, color='black')
+
+st.pyplot(fig)    
