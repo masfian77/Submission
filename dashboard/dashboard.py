@@ -7,7 +7,7 @@ sns.set(style='dark')
 
 def create_sum_order_items_df(df):
     sum_order_items_df = df.groupby("product_category_name_english")["order_id"].nunique().sort_values(ascending=False).reset_index()
-    sum_order_items_df.rename(columns={"order_id": "number_of_sales"}, inplace=True)  # Rename for clarity
+    sum_order_items_df.rename(columns={"order_id": "number_of_sales"}, inplace=True)
     return sum_order_items_df
 
 def create_review_score_df(df):
@@ -28,7 +28,7 @@ sum_order_items_df = create_sum_order_items_df(all_df)
 review_score_df,most_common_score_df,df_cust_df = create_review_score_df(all_df)  
 
 fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(20, 10))
-colors = ["#90CAF9", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3"]
+colors = ["#000000", "#808080", "#808080", "#808080", "#808080"]
 
 # Best Performing Product
 sns.barplot(x="number_of_sales", y="product_category_name_english", data=sum_order_items_df.head(5), palette=colors, ax=ax[0])
